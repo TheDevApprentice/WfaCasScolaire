@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Ah_Db_Cours1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_cours">
+          <Key>
+            <PropertyRef Name="no_cours" />
+          </Key>
+          <Property Name="no_cours" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="nom_cours" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_etudiant">
+          <Key>
+            <PropertyRef Name="no_da" />
+          </Key>
+          <Property Name="no_da" Type="nchar" MaxLength="7" Nullable="false" />
+          <Property Name="nom" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="prenom" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tbl_prealable">
+          <Key>
+            <PropertyRef Name="no_coursBase" />
+            <PropertyRef Name="no_coursPrealable" />
+          </Key>
+          <Property Name="no_coursBase" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="no_coursPrealable" Type="nchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_resultat">
+          <Key>
+            <PropertyRef Name="no_cours" />
+            <PropertyRef Name="no_da" />
+            <PropertyRef Name="session_" />
+          </Key>
+          <Property Name="no_cours" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="no_da" Type="nchar" MaxLength="7" Nullable="false" />
+          <Property Name="session_" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="note" Type="smallint" />
+        </EntityType>
+        <Association Name="fk_coursBase">
+          <End Role="tbl_cours" Type="Self.tbl_cours" Multiplicity="1" />
+          <End Role="tbl_prealable" Type="Self.tbl_prealable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_cours">
+              <PropertyRef Name="no_cours" />
+            </Principal>
+            <Dependent Role="tbl_prealable">
+              <PropertyRef Name="no_coursBase" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_coursprealable">
+          <End Role="tbl_cours" Type="Self.tbl_cours" Multiplicity="1" />
+          <End Role="tbl_prealable" Type="Self.tbl_prealable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_cours">
+              <PropertyRef Name="no_cours" />
+            </Principal>
+            <Dependent Role="tbl_prealable">
+              <PropertyRef Name="no_coursPrealable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_resultat_tbl_cours">
+          <End Role="tbl_cours" Type="Self.tbl_cours" Multiplicity="1" />
+          <End Role="tbl_resultat" Type="Self.tbl_resultat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_cours">
+              <PropertyRef Name="no_cours" />
+            </Principal>
+            <Dependent Role="tbl_resultat">
+              <PropertyRef Name="no_cours" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_resultat_tbl_etudiants">
+          <End Role="tbl_etudiant" Type="Self.tbl_etudiant" Multiplicity="1" />
+          <End Role="tbl_resultat" Type="Self.tbl_resultat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_etudiant">
+              <PropertyRef Name="no_da" />
+            </Principal>
+            <Dependent Role="tbl_resultat">
+              <PropertyRef Name="no_da" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Ah_Db_Cours1ModelStoreContainer">
+          <EntitySet Name="tbl_cours" EntityType="Self.tbl_cours" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_etudiant" EntityType="Self.tbl_etudiant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_prealable" EntityType="Self.tbl_prealable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_resultat" EntityType="Self.tbl_resultat" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_coursBase" Association="Self.fk_coursBase">
+            <End Role="tbl_cours" EntitySet="tbl_cours" />
+            <End Role="tbl_prealable" EntitySet="tbl_prealable" />
+          </AssociationSet>
+          <AssociationSet Name="fk_coursprealable" Association="Self.fk_coursprealable">
+            <End Role="tbl_cours" EntitySet="tbl_cours" />
+            <End Role="tbl_prealable" EntitySet="tbl_prealable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_resultat_tbl_cours" Association="Self.FK_tbl_resultat_tbl_cours">
+            <End Role="tbl_cours" EntitySet="tbl_cours" />
+            <End Role="tbl_resultat" EntitySet="tbl_resultat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_resultat_tbl_etudiants" Association="Self.FK_tbl_resultat_tbl_etudiants">
+            <End Role="tbl_etudiant" EntitySet="tbl_etudiant" />
+            <End Role="tbl_resultat" EntitySet="tbl_resultat" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Ah_Db_Cours1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_cours">
+          <Key>
+            <PropertyRef Name="no_cours" />
+          </Key>
+          <Property Name="no_cours" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="nom_cours" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tbl_resultat" Relationship="Self.FK_tbl_resultat_tbl_cours" FromRole="tbl_cours" ToRole="tbl_resultat" />
+          <NavigationProperty Name="tbl_cours1" Relationship="Self.tbl_prealable" FromRole="tbl_cours" ToRole="tbl_cours1" />
+          <NavigationProperty Name="tbl_cours2" Relationship="Self.tbl_prealable" FromRole="tbl_cours1" ToRole="tbl_cours" />
+        </EntityType>
+        <EntityType Name="tbl_etudiant">
+          <Key>
+            <PropertyRef Name="no_da" />
+          </Key>
+          <Property Name="no_da" Type="String" MaxLength="7" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="prenom" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="tbl_resultat" Relationship="Self.FK_tbl_resultat_tbl_etudiants" FromRole="tbl_etudiant" ToRole="tbl_resultat" />
+        </EntityType>
+        <EntityType Name="tbl_resultat">
+          <Key>
+            <PropertyRef Name="no_cours" />
+            <PropertyRef Name="no_da" />
+            <PropertyRef Name="session_" />
+          </Key>
+          <Property Name="no_cours" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="no_da" Type="String" MaxLength="7" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="session_" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="note" Type="Int16" />
+          <NavigationProperty Name="tbl_cours" Relationship="Self.FK_tbl_resultat_tbl_cours" FromRole="tbl_resultat" ToRole="tbl_cours" />
+          <NavigationProperty Name="tbl_etudiant" Relationship="Self.FK_tbl_resultat_tbl_etudiants" FromRole="tbl_resultat" ToRole="tbl_etudiant" />
+        </EntityType>
+        <Association Name="FK_tbl_resultat_tbl_cours">
+          <End Role="tbl_cours" Type="Self.tbl_cours" Multiplicity="1" />
+          <End Role="tbl_resultat" Type="Self.tbl_resultat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_cours">
+              <PropertyRef Name="no_cours" />
+            </Principal>
+            <Dependent Role="tbl_resultat">
+              <PropertyRef Name="no_cours" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_resultat_tbl_etudiants">
+          <End Role="tbl_etudiant" Type="Self.tbl_etudiant" Multiplicity="1" />
+          <End Role="tbl_resultat" Type="Self.tbl_resultat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_etudiant">
+              <PropertyRef Name="no_da" />
+            </Principal>
+            <Dependent Role="tbl_resultat">
+              <PropertyRef Name="no_da" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tbl_prealable">
+          <End Role="tbl_cours" Type="Self.tbl_cours" Multiplicity="*" />
+          <End Role="tbl_cours1" Type="Self.tbl_cours" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Ah_Db_Cours1Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_cours" EntityType="Self.tbl_cours" />
+          <EntitySet Name="tbl_etudiant" EntityType="Self.tbl_etudiant" />
+          <EntitySet Name="tbl_resultat" EntityType="Self.tbl_resultat" />
+          <AssociationSet Name="FK_tbl_resultat_tbl_cours" Association="Self.FK_tbl_resultat_tbl_cours">
+            <End Role="tbl_cours" EntitySet="tbl_cours" />
+            <End Role="tbl_resultat" EntitySet="tbl_resultat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_resultat_tbl_etudiants" Association="Self.FK_tbl_resultat_tbl_etudiants">
+            <End Role="tbl_etudiant" EntitySet="tbl_etudiant" />
+            <End Role="tbl_resultat" EntitySet="tbl_resultat" />
+          </AssociationSet>
+          <AssociationSet Name="tbl_prealable" Association="Self.tbl_prealable">
+            <End Role="tbl_cours" EntitySet="tbl_cours" />
+            <End Role="tbl_cours1" EntitySet="tbl_cours" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Ah_Db_Cours1ModelStoreContainer" CdmEntityContainer="Ah_Db_Cours1Entities1">
+          <EntitySetMapping Name="tbl_cours">
+            <EntityTypeMapping TypeName="Ah_Db_Cours1Model.tbl_cours">
+              <MappingFragment StoreEntitySet="tbl_cours">
+                <ScalarProperty Name="no_cours" ColumnName="no_cours" />
+                <ScalarProperty Name="nom_cours" ColumnName="nom_cours" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_etudiant">
+            <EntityTypeMapping TypeName="Ah_Db_Cours1Model.tbl_etudiant">
+              <MappingFragment StoreEntitySet="tbl_etudiant">
+                <ScalarProperty Name="no_da" ColumnName="no_da" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="prenom" ColumnName="prenom" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_resultat">
+            <EntityTypeMapping TypeName="Ah_Db_Cours1Model.tbl_resultat">
+              <MappingFragment StoreEntitySet="tbl_resultat">
+                <ScalarProperty Name="no_cours" ColumnName="no_cours" />
+                <ScalarProperty Name="no_da" ColumnName="no_da" />
+                <ScalarProperty Name="session_" ColumnName="session_" />
+                <ScalarProperty Name="note" ColumnName="note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="tbl_prealable" TypeName="Ah_Db_Cours1Model.tbl_prealable" StoreEntitySet="tbl_prealable">
+            <EndProperty Name="tbl_cours">
+              <ScalarProperty Name="no_cours" ColumnName="no_coursBase" />
+            </EndProperty>
+            <EndProperty Name="tbl_cours1">
+              <ScalarProperty Name="no_cours" ColumnName="no_coursPrealable" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
